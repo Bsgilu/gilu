@@ -1,30 +1,77 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head
-    margin: 0;
-    min-height: 100vh;
-    background-color: #c40000; /* vermelho de fundo */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 32 32'%3E%3Cpath fill='%23f7b2c4' d='M16 28s-12-7.4-12-16A6.5 6.5 0 0 1 16 6a6.5 6.5 0 0 1 12 6c0 8.6-12 16-12 16z'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 80px 80px;
->
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Uma Declaração</title>
+
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: 'Arial', sans-serif;
       background: linear-gradient(135deg, #8b0000, #c0392b);
-      background-image: radial-gradient(rgba(255,255,255,0.15) 2px, transparent 2px);
-      background-size: 40px 40px;
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
     }
+
+    /* Container dos corações */
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Coração */
+    .heart {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background-color: #f7b2c4;
+      transform: rotate(45deg);
+      animation: floatUp linear infinite;
+      opacity: 0.8;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background-color: #f7b2c4;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -9px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -9px;
+      top: 0;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 1;
+      }
+    }
+
+    /* Card principal */
     .card {
+      position: relative;
+      z-index: 1;
       background: rgba(255,255,255,0.92);
       padding: 30px;
       max-width: 600px;
@@ -33,16 +80,19 @@
       text-align: center;
       backdrop-filter: blur(4px);
     }
+
     h1 {
       font-size: 28px;
       margin-bottom: 20px;
       color: #6b3fa0;
     }
+
     p {
       font-size: 18px;
       line-height: 1.7;
       color: #444;
     }
+
     .assinatura {
       margin-top: 30px;
       font-size: 16px;
@@ -50,10 +100,21 @@
     }
   </style>
 </head>
+
 <body>
+
+  <!-- Corações animados -->
+  <div class="hearts"></div>
+
+  <!-- Conteúdo -->
   <div class="card">
-    <a href="https://youtu.be/OfkdzEa44TE?t=68" target="_blank" style="display:inline-block; margin-bottom:20px; padding:12px 22px; background:#b11226; color:#fff; text-decoration:none; border-radius:30px; font-size:16px; box-shadow:0 6px 18px rgba(0,0,0,0.25);">🎵 Ouça enquanto lê</a>
+    <a href="https://youtu.be/OfkdzEa44TE?t=68" target="_blank"
+       style="display:inline-block; margin-bottom:20px; padding:12px 22px; background:#b11226; color:#fff; text-decoration:none; border-radius:30px; font-size:16px; box-shadow:0 6px 18px rgba(0,0,0,0.25);">
+       🎵 Ouça enquanto lê
+    </a>
+
     <h1>Linda</h1>
+
     <p>
       Nem tudo na vida é simples, e nem sempre os caminhos são claros.
       Mesmo assim, o que sinto é real e verdadeiro.
@@ -64,14 +125,38 @@
       Por isso, preciso que você me diga com sinceridade qual é o lugar que me cabe na sua vida:
       se sou amiga, namorada, esposa… ou se não sou mais nada.
       <br /><br />
-      Porque a forma como escolhemos  ou deixamos de escolher é o que dita o jogo da vida.
+      Porque a forma como escolhemos ou deixamos de escolher é o que dita o jogo da vida.
       A indecisão também é uma decisão, e ela define caminhos, consequências e destinos.
     </p>
+
     <div class="assinatura">
       Com carinho,<br />
       Luana
     </div>
   </div>
+
+  <!-- JavaScript dos corações -->
+  <script>
+    const heartsContainer = document.querySelector('.hearts');
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (5 + Math.random() * 6) + 's';
+      heart.style.width = heart.style.height = (12 + Math.random() * 18) + 'px';
+      heart.style.opacity = Math.random();
+
+      heartsContainer.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 12000);
+    }
+
+    setInterval(createHeart, 350);
+  </script>
+
 </body>
 </html>
-
